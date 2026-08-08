@@ -1,0 +1,9 @@
+{
+  "//": "Resolution shim for legacy `moduleResolution: node` consumers that ignore the exports map. Modern resolvers use ../package.json#exports instead.",
+  "name": "rtk-thunkease-react",
+  "private": true,
+  "main": "../dist/react/index.cjs",
+  "module": "../dist/react/index.js",
+  "types": "../dist/react/index.d.ts",
+  "sideEffects": false
+}
