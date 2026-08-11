@@ -13,6 +13,9 @@ npm i rtk-thunkease
 
 Peer dependency: `@reduxjs/toolkit` v2. Zero runtime dependencies.
 
+Live demo of all three modes: <https://srcgrp.github.io/rtk-thunkease/>
+([source](examples/demo)).
+
 ## Before / after
 
 ```ts
@@ -173,6 +176,33 @@ Both add `isIdle`, `isSuccess` and `isError` to the slot, and read a missing slo
 or an unfetched bucket as idle — so there is nothing to guard before
 destructuring.
 
+### Pin the state type once
+
+The `(s: RootState)` annotation above is not decoration. TypeScript has nothing
+to infer the store's state from, so an unannotated `(s) => s.user.getProfile`
+leaves `s` as `unknown` and collapses `data` to `{}`.
+
+Rather than repeat it at every call site, pin it once — same shape as
+react-redux's `useSelector.withTypes`:
+
+```ts
+// store/hooks.ts
+import {
+  useApiState as useApiStateBase,
+  useHashApiState as useHashApiStateBase
+} from 'rtk-thunkease/react';
+
+export const useApiState = useApiStateBase.withTypes<RootState>();
+export const useHashApiState = useHashApiStateBase.withTypes<RootState>();
+```
+
+```tsx
+// s is RootState, data is Profile | undefined
+const { data } = useApiState((s) => s.user.getProfile);
+```
+
+The payload type still comes off the slot, so nothing else needs spelling out.
+
 ## Options
 
 ```ts
@@ -217,6 +247,7 @@ action type — use it for actions the thunks do not cover, such as
 | `ConvertedThunks`, `PureStateName`, `GetAsyncThunkReturnType` | type helpers |
 | `ThunkEaseOptions`, `ThunkEaseSlice`, `GeneratedCaseReducers` | signature types |
 | `useApiState`, `useHashApiState`, `ApiStateView` | from `rtk-thunkease/react` |
+| `UseApiState`, `UseHashApiState`, `TypedUseApiState`, `TypedUseHashApiState` | hook signature types, `rtk-thunkease/react` |
 
 ## License
 
