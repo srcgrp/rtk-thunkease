@@ -1,6 +1,6 @@
 {
   "name": "rtk-thunkease",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Redux Toolkit createSlice wrapper that generates loading/error/data state and the full pending/rejected/fulfilled triad for every async thunk you hand it.",
   "keywords": [
     "redux",
